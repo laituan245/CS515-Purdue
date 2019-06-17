@@ -6,7 +6,6 @@
 - [ ] [Homework 3](https://www.cs.purdue.edu/homes/dgleich/cs515-2018/homeworks/homework-3.html)
 
 ## Lectures
-- [ ] Sections 1.1-1.3 in Golub and van Loan book
 - [ ] Lecture 2
 - [ ] Lecture 3
 - [ ] Lecture 4
