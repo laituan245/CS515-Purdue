@@ -31,14 +31,17 @@ end
 W1 = crude_edge_detector(32,16)
 W2 = crude_edge_detector(16,8)
 
+println("About to start Part 5")
 # Part 5
 function net(x)
   global W1
   global W2
-  out1 = max.(0, W1 * vec(x))
+  out1 = max.(0, W1 * x)
   out2 = max.(0, W2 * out1)
   final_out = sum(out2)
   return final_out
 end
 
-println(net(X1))
+@show net(vec(Float64.(load("image1.png"))))
+@show net(vec(Float64.(load("image2.png"))))
+@show net(vec(Float64.(load("image3.png"))))
