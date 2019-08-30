@@ -45,3 +45,36 @@ end
 @show net(vec(Float64.(load("image1.png"))))
 @show net(vec(Float64.(load("image2.png"))))
 @show net(vec(Float64.(load("image3.png"))))
+
+println("\n")
+println("About to start Part 7")
+# Part 7
+using SparseArrays
+function sparse_crude_edge_detector(nin,nout)
+  Nx = reshape(1:(nin*nin), nin, nin)
+  Ny = reshape(1:(nout*nout), nout, nout)
+  nnz = 2 * 2 * nout * nout
+  I = zeros(Int, nnz) # the row index
+  J = zeros(Int, nnz) # the column index
+  V = zeros(nnz) # the value
+  index = 1
+  for i=1:nin
+    for j=1:nin
+      I[index] = Ny[Int(ceil(i/2)), Int(ceil(j/2))]
+      J[index] = Nx[i, j]
+      is_1 = (((i % 2) + (j % 2)) % 2 == 0)
+      V[index] = is_1 ? 1 : -1
+      index += 1
+    end
+  end
+  return sparse(I,J,V,nout^2,nin^2)
+end
+
+# Tests
+sW1 = sparse_crude_edge_detector(32,16)
+W1 = crude_edge_detector(32,16)
+println(sW1 == W1)
+
+sW2 = sparse_crude_edge_detector(16,8)
+W2 = crude_edge_detector(16,8)
+println(sW2 == W2)
