@@ -16,3 +16,4 @@ b[134] = 0
 # Solve for x
 x =  (T' - I) \ -b
 println(x[140])
+println(x[47])
