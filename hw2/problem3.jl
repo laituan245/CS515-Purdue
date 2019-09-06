@@ -10,4 +10,5 @@ function csc_transpose_matvec(colptr, rowval, nzval, m, n, x)
           y[j] += v*x[i]
       end
   end
+  return y
 end
