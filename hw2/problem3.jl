@@ -22,7 +22,7 @@ function csc_column_projection(colptr, rowval, nzval, m, n, i, x)
     for nzi=colptr[i]:colptr[i+1]-1 # for each entry in the i-th column
         index = rowval[nzi]
         value = nzval[nzi]
-        y += v*x[index]
+        y += value*x[index]
     end
     return y
 end
