@@ -27,6 +27,27 @@ function csc_column_projection(colptr, rowval, nzval, m, n, i, x)
     return y
 end
 
+
+""" 3. Column-column inner-product
+Returns rho = A[:,i]'*A[:,j] where A is given by the CSC arrays
+colptr, rowval, nzval, m, n and i, and j are the column indices. """
+function csc_col_col_prod(colptr, rowval, nzval, m, n, i, j)
+    # Extract the i-th column
+    column_i = zeros(m)
+    for nzi=colptr[i]:colptr[i+1]-1 # for each entry in the i-th column
+        index = rowval[nzi]
+        value = nzval[nzi]
+        column_i[index] = value
+
+    # Calculate rho
+    rho = 0
+    for nzj=colptr[j]:colptr[j+1]-1 # for each entry in the j-th column
+        index = rowval[nzj]
+        value = nzval[nzj]
+        rho += value * column_i[index]
+    return rho
+end
+
 # Test cases
 using SparseArrays
 A = sprandn(4,5,0.5) # 4x5 matrix
