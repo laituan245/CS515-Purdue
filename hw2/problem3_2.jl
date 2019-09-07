@@ -13,6 +13,23 @@ function csc_lookup(colptr, rowval, nzval, m, n, i, j)
     return rho
 end
 
+""" 5. Lookup row
+Returns x = A[i,:] where A is given by the CSC arrays
+colptr, rowval, nzval, m, n and i is the row index . """
+function csc_lookup_row(colptr, rowval, nzval, m, n, i)
+    x = zeros(n)
+    for j=1:length(colptr)-1 # for each column ...
+        for nzi=colptr[j]:colptr[j+1]-1 # for each entry in the column
+            row_index = rowval[nzi]
+            value = nzval[nzi]
+            if row_index == i
+                x[j] = value
+            end
+        end
+    end
+    return x
+end
+
 
 # Test cases
 using SparseArrays
