@@ -33,6 +33,7 @@ A = sprandn(4,5,0.5) # 4x5 matrix
 B = sprandn(10, 3, 0.8) # 10x3 matrix
 
 # Test the function csc_transpose_matvec
+println("Test the function csc_transpose_matvec")
 x = randn(4)
 passed_test = A'*x == csc_transpose_matvec(A.colptr, A.rowval, A.nzval, A.m, A.n, x)
 print("Passed test 1? ")
@@ -42,7 +43,19 @@ println(csc_transpose_matvec(A.colptr, A.rowval, A.nzval, A.m, A.n, x))
 
 x2 = rand(10)
 passed_test = B'*x2 == csc_transpose_matvec(B.colptr, B.rowval, B.nzval, B.m, B.n, x2)
-print("\nPassed test2? ")
+print("\nPassed test 2? ")
 println(passed_test)
 println(B'*x2)
 println(csc_transpose_matvec(B.colptr, B.rowval, B.nzval, B.m, B.n, x2))
+
+# Test the function csc_column_projection
+println("\nTest the function csc_column_projection")
+passed_test = A[:, 5]'*x == csc_column_projection(A.colptr, A.rowval, A.nzval, A.m, A.n, 5, x)
+print("Passed test 3? ")
+println(passed_test)
+println(A[:, 5]'*x)
+println(csc_column_projection(A.colptr, A.rowval, A.nzval, A.m, A.n, 5, x))
+
+passed_test = B[:,1]'*x2 == csc_column_projection(B.colptr, B.rowval, B.nzval, B.m, B.n, 1, x2)
+println("\nPassed test 4? ")
+println(passed_test)
