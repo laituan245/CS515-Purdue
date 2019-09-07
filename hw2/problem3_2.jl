@@ -47,3 +47,12 @@ print(passed_test_2)
 print("\n")
 println(C[15, 12])
 println(csc_lookup(C.colptr, C.rowval, C.nzval, C.m, C.n, 15, 12))
+
+# Test the function csc_lookup_row
+print("Test the function csc_lookup_row")
+for i=1:4
+    passed_test = A[i,:] == csc_lookup_row(A.colptr, A.rowval, A.nzval, A.m, A.n, i)
+    println(passed_test)
+    passed_test = C[i,:] == csc_lookup_row(C.colptr, C.rowval, C.nzval, C.m, C.n, i)
+    println(passed_test)
+end
