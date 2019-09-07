@@ -14,15 +14,21 @@ function csc_transpose_matvec(colptr, rowval, nzval, m, n, x)
 end
 
 
-# Test cases
-using DelimitedFiles
-using SparseArrays
-data = readdlm("candyland-matrix.csv",',')
-TI = Int.(data[:,1])
-TJ = Int.(data[:,2])
-TV = data[:,3]
-T = sparse(TI,TJ, TV, 140,140)
+""" 2. Column inner-product
+Returns  = A[:,i]'*x where A is given by the CSC arrays
+colptr, rowval, nzval, m, n and x is the vector. """
+function csc_column_projection(colptr, rowval, nzval, m, n, i, x)
+    y = 0
+    for nzi=colptr[i]:colptr[i+1]-1 # for each entry in the i-th column
+        index = rowval[nzi]
+        value = nzval[nzi]
+        y += v*x[index]
+    end
+    return y
+end
 
+# Test cases
+using SparseArrays
 A = sprandn(4,5,0.5) # 4x5 matrix
 B = sprandn(10, 3, 0.8) # 10x3 matrix
 
