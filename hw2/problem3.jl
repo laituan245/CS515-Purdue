@@ -38,6 +38,7 @@ function csc_col_col_prod(colptr, rowval, nzval, m, n, i, j)
         index = rowval[nzi]
         value = nzval[nzi]
         column_i[index] = value
+    end
 
     # Calculate rho
     rho = 0
@@ -45,6 +46,7 @@ function csc_col_col_prod(colptr, rowval, nzval, m, n, i, j)
         index = rowval[nzj]
         value = nzval[nzj]
         rho += value * column_i[index]
+    end
     return rho
 end
 
@@ -79,4 +81,10 @@ println(csc_column_projection(A.colptr, A.rowval, A.nzval, A.m, A.n, 5, x))
 
 passed_test = B[:,1]'*x2 == csc_column_projection(B.colptr, B.rowval, B.nzval, B.m, B.n, 1, x2)
 println("\nPassed test 4? ")
+println(passed_test)
+
+# Test the function csc_col_col_prod
+println("\nTest the function csc_col_col_prod")
+passed_test = A[:,3]' * A[:, 4] == csc_col_col_prod(A.colptr, A.rowval, A.nzval, A.m, A.n, 3, 4)
+print("Passed test 5?")
 println(passed_test)
