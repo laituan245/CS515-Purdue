@@ -46,6 +46,8 @@ A, fvec = laplacian(10, f)
 uvec = A \ fvec
 
 # Plotting Code
+using Plots
+
 function make_plot(uvec, n)
     N = (n+1)^2
     x = zeros(N); y = zeros(N); z = zeros(N); index = 1
@@ -59,6 +61,7 @@ function make_plot(uvec, n)
             index += 1
         end
     end
+    return surface(x, y, z)
 end
 
-make_plot(uvec, 10)
+savefig(make_plot(uvec, 10), "surface.png")
