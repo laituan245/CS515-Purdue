@@ -37,7 +37,7 @@ end
 
 sum, count = 0, 0
 start_start = 140
-for i=1:1000
+for i=1:500000
     global sum
     global count
     sum += simulation(T, start_start)
