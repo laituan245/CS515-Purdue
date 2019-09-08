@@ -1,6 +1,6 @@
 function laplacian(n::Integer, f::Function)
     N = (n+1)^2
-    nz = <fill-in>
+    nz = (n+1) * (5*n+1)
     I = zeros(Int,nz)
     J = zeros(Int,nz)
     V = zeros(nz)
