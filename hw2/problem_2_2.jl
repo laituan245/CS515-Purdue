@@ -44,3 +44,21 @@ end
 
 A, fvec = laplacian(10, f)
 uvec = A \ fvec
+
+# Plotting Code
+function make_plot(uvec, n)
+    N = (n+1)^2
+    x = zeros(N); y = zeros(N); z = zeros(N); index = 1
+    h = 1.0/(n)
+    G = reshape(1:N, n+1, n+1)'
+    for i=0:n
+        for j=0:n
+            x[index] = i * h
+            y[index] = j * h
+            z[index] = uvec[G[i+1,j+1]]
+            index += 1
+        end
+    end
+end
+
+make_plot(uvec, 10)
