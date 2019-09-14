@@ -1,3 +1,4 @@
+using LinearAlgebra
 using SparseArrays
 
 function laplacian(n::Integer, f::Function)
@@ -45,6 +46,18 @@ end
 A, fvec = laplacian(10, f)
 A, fvec = -A, -fvec
 uvec = A \ fvec
+
+function run_richardson_method(A, b, alpha, iters)
+    x = b
+    for i=1:iters
+        error = b - A * x
+        x = x + alpha * error
+    end
+    return x
+end
+estimated_uvec = run_richardson_method(A, fvec, 0.249, 1000)
+println(norm(estimated_uvec-uvec))
+
 
 # Plotting Code
 using Plots
