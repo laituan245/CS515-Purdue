@@ -43,6 +43,7 @@ function f(x, y)
 end
 
 A, fvec = laplacian(10, f)
+A, fvec = -A, -fvec
 uvec = A \ fvec
 
 # Plotting Code
