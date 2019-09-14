@@ -59,6 +59,17 @@ estimated_uvec = run_richardson_method(A, fvec, 0.249, 1000)
 println(norm(estimated_uvec-uvec))
 
 
+function run_richardson_method_2(A, b, alpha)
+    iters = 0
+    x = b
+    while norm(b-A * x) / norm(b) > 1e-5
+        error = b - A * x
+        x = x + alpha * error
+        iters += 1
+    end
+    return x, iters
+end
+
 # Plotting Code
 using Plots
 
