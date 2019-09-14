@@ -18,19 +18,19 @@ function laplacian(n::Integer, f::Function)
                 # we are on a boudnary
                 fvec[row] = 0.0
                 # fill in entries in I,J,V and update index
-                I[index] = row; J[index] = row; V[index]=-4*n^2; index+=1
-                if j > 0 I[index] = row; J[index] = row-1; V[index]=n^2; index+=1 end
-                if j < n I[index] = row; J[index] = row+1; V[index]=n^2; index+=1 end
-                if i > 0 I[index] = row; J[index] = row-n-1; V[index]=n^2; index+=1 end
-                if i < n I[index] = row; J[index] = row+n+1; V[index]=n^2; index+=1 end
+                I[index] = row; J[index] = row; V[index]=-4; index+=1
+                if j > 0 I[index] = row; J[index] = row-1; V[index]=1; index+=1 end
+                if j < n I[index] = row; J[index] = row+1; V[index]=1; index+=1 end
+                if i > 0 I[index] = row; J[index] = row-n-1; V[index]=1; index+=1 end
+                if i < n I[index] = row; J[index] = row+n+1; V[index]=1; index+=1 end
             else
                 fvec[row] = f(i*h, j*h)*h^2
                 # fill in entries in I,J,V and update index
-                I[index] = row; J[index] = row; V[index]=-4*n^2; index+=1
-                I[index] = row; J[index] = row-1; V[index]=n^2; index+=1
-                I[index] = row; J[index] = row+1; V[index]=n^2; index+=1
-                I[index] = row; J[index] = row-n-1; V[index]=n^2; index+=1
-                I[index] = row; J[index] = row+n+1; V[index]=n^2; index+=1
+                I[index] = row; J[index] = row; V[index]=-4; index+=1
+                I[index] = row; J[index] = row-1; V[index]=1; index+=1
+                I[index] = row; J[index] = row+1; V[index]=1; index+=1
+                I[index] = row; J[index] = row-n-1; V[index]=1; index+=1
+                I[index] = row; J[index] = row+n+1; V[index]=1; index+=1
             end
         end
     end
