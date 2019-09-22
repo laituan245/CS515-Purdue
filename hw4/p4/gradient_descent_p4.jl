@@ -58,6 +58,10 @@ function gradient_descent(A, b)
         alpha = dot(g, g) / (dot(g, Ag))
         x = x - alpha * g
 
+        print(relative_residual)
+        print(',')
+        print(total_work)
+        println()
         # Update g and Ag
         # The order of the following two statements is important
         g = g - alpha * Ag
