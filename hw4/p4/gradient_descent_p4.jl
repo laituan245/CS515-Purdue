@@ -48,10 +48,13 @@ A, fvec = laplacian(10, f)
 A, fvec = -A, -fvec
 
 function gradient_descent(A, b)
+    nonzeros_A = length(A.nzval)
     x = rand(A.n)
     g = A * x - b
     Ag = A * g
-    while norm(g) > 1e-16
+    total_work = (2 * nonzeros_A)
+    relative_residual = norm(g) / norm(b)
+    while relative_residual > 1e-4
         alpha = dot(g, g) / (dot(g, Ag))
         x = x - alpha * g
 
@@ -59,10 +62,11 @@ function gradient_descent(A, b)
         # The order of the following two statements is important
         g = g - alpha * Ag
         Ag = A * g
+        relative_residual = norm(g) / norm(b)
+        total_work += nonzeros_A
     end
-    return x
+    return x, total_work
 end
 
-sol = gradient_descent(A, fvec)
+sol, total_work = gradient_descent(A, fvec)
 uvec = A \ fvec
-println(norm(sol-uvec))
