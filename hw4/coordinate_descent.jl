@@ -74,9 +74,21 @@ function f(x, y)
 end
 
 A, fvec = laplacian(10, f)
-A_diagonal = extract_diagonal(A)
-g = rand(A.m)
+A, fvec = -A, -fvec
 
+function cyclic_coordinate_descent(A, b)
+    A_diagonal = extract_diagonal(A)
+    x = rand(A.n)
+    g = A * x - b
+    i = 1
+    while norm(g) > 1e-16
+        x[i] = x[i] - (g[i] / A_diagonal[i])
+        g = update_g(g, A, A_diagonal, i)
+        if (i == A.n) i = 1 else i += 1 end
+    end
+    return x
+end
+sol = cyclic_coordinate_descent(A, fvec)
 
-# A, fvec = -A, -fvec
-# uvec = A \ fvec
+uvec = A \ fvec
+println(norm(sol-uvec))
