@@ -81,9 +81,11 @@ function cyclic_coordinate_descent(A, b)
     x = rand(A.n)
     g = A * x - b
     i = 1
-    while norm(g) > 1e-16
+    relative_residual = norm(g) / norm(b)
+    while relative_residual > 1e-4
         x[i] = x[i] - (g[i] / A_diagonal[i])
         g = update_g(g, A, A_diagonal, i)
+        relative_residual = norm(g) / norm(b)
         if (i == A.n) i = 1 else i += 1 end
     end
     return x
@@ -93,10 +95,12 @@ function random_coordinate_descent(A, b)
     A_diagonal = extract_diagonal(A)
     x = rand(A.n)
     g = A * x - b
-    while norm(g) > 1e-16
+    relative_residual = norm(g) / norm(b)
+    while relative_residual > 1e-4
         i = rand(1:A.n)
         x[i] = x[i] - (g[i] / A_diagonal[i])
         g = update_g(g, A, A_diagonal, i)
+        relative_residual = norm(g) / norm(b)
     end
     return x
 end
