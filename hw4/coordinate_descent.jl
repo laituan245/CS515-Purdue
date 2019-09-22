@@ -88,7 +88,20 @@ function cyclic_coordinate_descent(A, b)
     end
     return x
 end
-sol = cyclic_coordinate_descent(A, fvec)
+
+function random_coordinate_descent(A, b)
+    A_diagonal = extract_diagonal(A)
+    x = rand(A.n)
+    g = A * x - b
+    while norm(g) > 1e-16
+        i = rand(1:A.n)
+        x[i] = x[i] - (g[i] / A_diagonal[i])
+        g = update_g(g, A, A_diagonal, i)
+    end
+    return x
+end
+
+sol = random_coordinate_descent(A, fvec)
 
 uvec = A \ fvec
 println(norm(sol-uvec))
