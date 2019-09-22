@@ -1,25 +1,34 @@
 using LinearAlgebra
 using SparseArrays
 
-function update_g(old_g, old_g_norm, A, A_diagonal, index)
+function update_g(old_g, A, A_diagonal, index)
   # old_g is the gradient vector from previous iteration
-  # old_g_norm is the 2-norm of the gradient vector from previous iteration
   # A is a CSC arrays
   # A_diagonal is a vector containing the values of the diagonal of A
   # index is the selected coordinate
   new_g = old_g
-  new_g_norm = old_g_norm^2
   colptr = A.colptr; rowval = A.rowval; nzval = A.nzval
-  scalar = old_g[i] / A_diagonal[i]
+  scalar = old_g[index] / A_diagonal[index]
   for nzi=colptr[index]:colptr[index+1]-1
-      new_g_norm -= (old_g[rowval[nzi]])^2
       new_g[rowval[nzi]] -= (scalar * nzval[nzi])
-      new_g_norm += (new_g[rowval[nzi]])^2
   end
-  new_g_norm = sqrt(new_g_norm)
-  return new_g, new_g_norm
+  return new_g
 end
 
+function extract_diagonal(A)
+    # Compute A_diagonal
+    A_diagonal = zeros(A.m)
+    for j=1:length(A.colptr)-1 # for each column ...
+        for nzi=A.colptr[j]:A.colptr[j+1]-1 # for each entry in the column
+            i = A.rowval[nzi]
+            v = A.nzval[nzi]
+            if i == j
+                A_diagonal[i] = v
+            end
+        end
+    end
+    return A_diagonal
+end
 
 ## Poisson Equation
 function laplacian(n::Integer, f::Function)
@@ -65,5 +74,9 @@ function f(x, y)
 end
 
 A, fvec = laplacian(10, f)
-A, fvec = -A, -fvec
-uvec = A \ fvec
+A_diagonal = extract_diagonal(A)
+g = rand(A.m)
+
+
+# A, fvec = -A, -fvec
+# uvec = A \ fvec
