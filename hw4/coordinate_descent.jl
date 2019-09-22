@@ -3,7 +3,7 @@ using SparseArrays
 
 function update_g(old_g, A, A_diagonal, index)
   # old_g is the gradient vector from previous iteration
-  # A is a CSC arrays
+  # A is a CSC matrix
   # A_diagonal is a vector containing the values of the diagonal of A
   # index is the selected coordinate
   new_g = old_g
