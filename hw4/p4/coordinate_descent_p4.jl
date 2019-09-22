@@ -77,6 +77,7 @@ A, fvec = laplacian(10, f)
 A, fvec = -A, -fvec
 
 function cyclic_coordinate_descent(A, b)
+    total_work = 0
     A_diagonal = extract_diagonal(A)
     x = rand(A.n)
     g = A * x - b
@@ -85,13 +86,20 @@ function cyclic_coordinate_descent(A, b)
     while relative_residual > 1e-4
         x[i] = x[i] - (g[i] / A_diagonal[i])
         g = update_g(g, A, A_diagonal, i)
+        total_work += (A.colptr[i+1]-A.colptr[i])
         relative_residual = norm(g) / norm(b)
         if (i == A.n) i = 1 else i += 1 end
+
+        print(relative_residual)
+        print(',')
+        print(total_work)
+        println()
     end
     return x
 end
 
 function random_coordinate_descent(A, b)
+    total_work = 0
     A_diagonal = extract_diagonal(A)
     x = rand(A.n)
     g = A * x - b
@@ -100,7 +108,13 @@ function random_coordinate_descent(A, b)
         i = rand(1:A.n)
         x[i] = x[i] - (g[i] / A_diagonal[i])
         g = update_g(g, A, A_diagonal, i)
+        total_work += (A.colptr[i+1]-A.colptr[i])
         relative_residual = norm(g) / norm(b)
+
+        print(relative_residual)
+        print(',')
+        print(total_work)
+        println()
     end
     return x
 end
