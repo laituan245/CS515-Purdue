@@ -31,3 +31,15 @@ b[134] = 0
 
 # Solve for correct x
 x =  (T' - I) \ -b
+
+# ========================= JACOBI Implementation =========================
+function jacobi_method(x, A, b)
+    iterations = 0
+    A_diagonals = extract_diagonal(A)
+    while norm(A * x - b) / norm(b) > 1e-4
+        x = (b - A*x + x .* A_diagonals) ./ A_diagonals
+        iterations += 1
+    end
+    return x, iterations
+end
+jacobi_x, jacobi_iterations = jacobi_method(rand(140), T'-I, -b)
