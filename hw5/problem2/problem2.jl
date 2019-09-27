@@ -34,6 +34,9 @@ x =  (T' - I) \ -b
 
 # ========================= JACOBI Implementation =========================
 function jacobi_method(x, A, b)
+    # x is a vector
+    # A is a CSC matrix
+    # b is a vector
     iterations = 0
     A_diagonals = extract_diagonal(A)
     while norm(A * x - b) / norm(b) > 1e-4
