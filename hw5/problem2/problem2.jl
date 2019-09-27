@@ -39,7 +39,7 @@ function jacobi_method(x, A, b)
     # b is a vector
     iterations = 0
     A_diagonals = extract_diagonal(A)
-    while norm(A * x - b) / norm(b) > 1e-4
+    while norm(A*x - b) / norm(b) > 1e-4
         x = (b - A*x + x .* A_diagonals) ./ A_diagonals
         iterations += 1
     end
