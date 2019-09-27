@@ -33,11 +33,11 @@ b[134] = 0
 x =  (T' - I) \ -b
 
 # ========================= JACOBI Implementation =========================
-function jacobi_method(x, A, b)
-    # x is a vector
+function jacobi_method(A, b)
     # A is a CSC matrix
     # b is a vector
     iterations = 0
+    x = rand(A.n)
     A_diagonals = extract_diagonal(A)
     while norm(A*x - b) / norm(b) > 1e-4
         x = (b - A*x + x .* A_diagonals) ./ A_diagonals
@@ -45,4 +45,4 @@ function jacobi_method(x, A, b)
     end
     return x, iterations
 end
-jacobi_x, jacobi_iterations = jacobi_method(rand(140), T'-I, -b)
+jacobi_x, jacobi_iterations = jacobi_method(T'-I, -b)
