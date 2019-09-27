@@ -2,6 +2,22 @@ using LinearAlgebra
 using DelimitedFiles
 using SparseArrays
 
+# ========================= Helper functions =========================
+function extract_diagonal(A)
+    # Compute A_diagonal
+    A_diagonal = zeros(A.m)
+    for j=1:length(A.colptr)-1 # for each column ...
+        for nzi=A.colptr[j]:A.colptr[j+1]-1 # for each entry in the column
+            i = A.rowval[nzi]
+            v = A.nzval[nzi]
+            if i == j
+                A_diagonal[i] = v
+            end
+        end
+    end
+    return A_diagonal
+end
+
 # Input the transition probability matrix T
 data = readdlm("candyland-matrix.csv",',')
 TI = Int.(data[:,1])
