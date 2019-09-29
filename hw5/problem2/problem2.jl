@@ -18,6 +18,19 @@ function extract_diagonal(A)
     return A_diagonal
 end
 
+function csc_matvec(A, x)
+    # Compute the matrix-vector product Ax
+      y = zeros(n)
+      for j=1:length(colptr)-1 # for each column ...
+          for nzi=colptr[j]:colptr[j+1]-1 # for each entry in the column
+              i = rowval[nzi]
+              v = nzval[nzi]
+              y[i] += v*x[j]
+          end
+      end
+      return y
+end
+
 # Input the transition probability matrix T
 data = readdlm("candyland-matrix.csv",',')
 TI = Int.(data[:,1])
