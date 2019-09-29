@@ -20,11 +20,11 @@ end
 
 function csc_matvec(A, x)
     # Compute the matrix-vector product Ax
-      y = zeros(n)
-      for j=1:length(colptr)-1 # for each column ...
-          for nzi=colptr[j]:colptr[j+1]-1 # for each entry in the column
-              i = rowval[nzi]
-              v = nzval[nzi]
+      y = zeros(A.n)
+      for j=1:length(A.colptr)-1 # for each column ...
+          for nzi=A.colptr[j]:A.colptr[j+1]-1 # for each entry in the column
+              i = A.rowval[nzi]
+              v = A.nzval[nzi]
               y[i] += v*x[j]
           end
       end
