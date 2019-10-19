@@ -34,8 +34,8 @@ function solve(A, B)
 
 end
 
-A = rand(2, 2)
-b = rand(2)
+A = rand(8, 8)
+b = rand(8)
 true_x = A \ b
 computed_x = solve(A, b)
 println(norm(true_x - computed_x))
