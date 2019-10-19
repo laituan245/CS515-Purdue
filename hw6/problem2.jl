@@ -2,8 +2,6 @@ using LinearAlgebra
 
 function solve(A, B)
     m,n = size(A)
-    @assert(m==n, "the system is not square")
-    @assert(n==length(B), "vector b has the wrong length")
 
     # Base case
     if n == 1
