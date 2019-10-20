@@ -16,13 +16,13 @@ function main()
     # Let's represent each odd-numbered image in terms of the even-numbered images
     # in a least squares
     even_images = A[2:2:nb_images, :]
-    X = even_images'
+    D = even_images'
     min_reconstruction_loss, min_idx = Inf, nothing
     max_reconstruction_loss, max_idx = -Inf, nothing
     for i = 1:2:nb_images
         b = A[i, :] # the current odd-numbered image
-        xhat = X \ b
-        reconstruction_loss = norm(b - (X * xhat))
+        xhat = D \ b
+        reconstruction_loss = norm(b - (D * xhat))
         if reconstruction_loss < min_reconstruction_loss
             min_reconstruction_loss = reconstruction_loss
             min_idx = i
