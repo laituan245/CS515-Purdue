@@ -35,7 +35,7 @@ function find_sigma(A, labels, image_idx)
         for i = 1:100
             preturbed_image = target_image + gamma * randn(nb_features)
             xhat = D \ preturbed_image
-            if argmax(xhat) != image_idx
+            if argmax(abs.(xhat)) != image_idx
                 nb_fails += 1
             end
         end
