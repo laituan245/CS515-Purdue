@@ -17,12 +17,24 @@ function main()
     # in a least squares
     even_images = A[2:2:nb_images, :]
     X = even_images'
+    min_reconstruction_loss, min_idx = Inf, nothing
+    max_reconstruction_loss, max_idx = -Inf, nothing
     for i = 1:2:nb_images
         b = A[i, :] # the current odd-numbered image
         xhat = X \ b
         reconstruction_loss = norm(b - (X * xhat))
-        println(reconstruction_loss)
+        if reconstruction_loss < min_reconstruction_loss
+            min_reconstruction_loss = reconstruction_loss
+            min_idx = i
+        end
+        if reconstruction_loss > max_reconstruction_loss
+            max_reconstruction_loss = reconstruction_loss
+            max_idx = i
+        end
     end
+
+    println(min_idx)
+    println(max_idx)
 end
 
 main()
