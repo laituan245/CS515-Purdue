@@ -15,6 +15,22 @@ function main()
 
     # Compute the singular value decomposition
     F = svd(centered_A')
+
+    # Plot the leading singular vector
+    u_1 = F.U[:,1]
+    u_1 = reshape(u_1, 64, 64)
+    savefig(heatmap(u_1, yflip=true, color=:gray), "leading_singular_vector.png")
+
+    # Plot u_2
+    u_2 = F.U[:,2]
+    u_2 = reshape(u_2, 64, 64)
+    savefig(heatmap(u_2, yflip=true, color=:gray), "u2.png")
+
+    # Plot u_3
+    u_3 = F.U[:,3]
+    u_3 = reshape(u_3, 64, 64)
+    savefig(heatmap(u_3, yflip=true, color=:gray), "u3.png")
+
 end
 
 function center_faces(D)
