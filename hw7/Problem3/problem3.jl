@@ -12,6 +12,9 @@ function main()
     println(string("Number of features is ", nb_features))
 
     centered_A = center_faces(A)
+
+    # Compute the singular value decomposition
+    F = svd(centered_A')
 end
 
 function center_faces(D)
