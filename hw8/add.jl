@@ -61,3 +61,17 @@ function sorted_mysum(x::Vector{Float64})
   end
   return s
 end
+
+# Define the problem
+a = zeros(5000)
+for i=1:1:5000
+    a[i] = 5000 - i + 1
+end
+a = a .+ 0.00001
+
+println(mysum(a))
+println(sorted_mysum(a))
+
+@show_float(mysum(a))
+@show_float(sorted_mysum(a))
+@show_float(12502500.05)
