@@ -62,6 +62,20 @@ function sorted_mysum(x::Vector{Float64})
   return s
 end
 
+# Reference: https://en.wikipedia.org/wiki/Kahan_summation_algorithm#The_algorithm
+function KahanSum(x::Vector{Float64})
+    sum = zero(Float64)
+    c = zero(Float64)
+    for i=1:length(x)
+        y = x[i] - c
+        t = sum + y
+        c = (t - sum) - y
+        sum = t
+    end
+    return sum
+end
+
+
 # Define the problem
 a = zeros(5000)
 for i=1:1:5000
@@ -75,3 +89,6 @@ println(sorted_mysum(a))
 @show_float(mysum(a))
 @show_float(sorted_mysum(a))
 @show_float(12502500.05)
+
+println(KahanSum(a))
+@show_float(KahanSum(a))
