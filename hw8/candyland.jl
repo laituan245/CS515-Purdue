@@ -22,3 +22,18 @@ function calculate_expected_length(T)
 end
 println(calculate_expected_length(T))
 # ----------------------------------------------------------------------------
+
+# Float16
+function calculate_expected_length_float16(T)
+    T = convert(SparseMatrixCSC{Float16,Int64}, T)
+    p = T[:, 140]
+    expected_length, k = convert(Float16, 0.0), convert(Float16, 0.0)
+    while norm(p) > 3e-7
+        k += 1
+        expected_length += k * p[134]
+        p = T * p
+    end
+    return expected_length
+end
+println(calculate_expected_length_float16(T))
+# ----------------------------------------------------------------------------
