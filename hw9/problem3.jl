@@ -41,9 +41,9 @@ function power_method(A, b, niter)
 end
 
 # 50 x 50 instance
-A = randn(50,50)
+A = randn(100,100)
 A = A' * A
-b = randn(50)
+b = randn(100)
 true_max_eig = eigmax(A)
 
 for niter=1:50
@@ -53,9 +53,9 @@ for niter=1:50
     krylov_method_eig = eigmax(S)
     power_method_eig = power_method(A, b, niter)
 
-    krylov_error = abs(krylov_method_eig-true_max_eig)
-    power_method_eig = abs(power_method_eig-true_max_eig)
+    krylov_error = abs(krylov_method_eig-true_max_eig) / abs(true_max_eig)
+    power_method_error = abs(power_method_eig-true_max_eig) / abs(true_max_eig)
 
     println(krylov_error)
-    println(power_method_eig)
+    println(power_method_error)
 end
