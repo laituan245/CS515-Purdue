@@ -58,26 +58,6 @@ function neumann(A, b, tol)
     return x
 end
 
-# Gradient Descent
-function gradient_descent(A, b, tol)
-    nonzeros_A = length(A.nzval)
-    x = rand(A.n)
-    g = A * x - b
-    Ag = A * g
-    relative_residual = norm(g) / norm(b)
-    while relative_residual > tol
-        alpha = dot(g, g) / (dot(g, Ag))
-        x = x - alpha * g
-
-        # Update g and Ag
-        # The order of the following two statements is important
-        g = g - alpha * Ag
-        Ag = A * g
-        relative_residual = norm(g) / norm(b)
-    end
-    return x
-end
-
 # Build the Candyland linear system
 data = readdlm("candyland-matrix.csv",',')
 TI = Int.(data[:,1])
@@ -90,8 +70,8 @@ b = ones((140, 1))
 b[134] = 0
 
 # Define the system
-A = T' - I
-b = -b
+A = I-T'
+b = b
 x_true = A \ b
 
 # Define the augmented system since A is non-symmetric
@@ -102,6 +82,6 @@ augmented_b = vec(vcat(b, zeros(size(b))))
 x_cg = cg(augmented_A, augmented_b, 1e-8)[141:280]
 println(norm(A * x_cg - b) / norm(b))
 
-# # Solve using gradient descent
-x_gd = gradient_descent(A, b, 1e-8)
-println(norm(A * x_gd - b) / norm(b))
+# Solve using the neumann series-based solver
+x_neumann = neumann(A, b, 1e-8)
+println(norm(A * x_neumann - b) / norm(b))
