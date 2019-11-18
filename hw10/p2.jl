@@ -49,3 +49,29 @@ for k=1:n
     quantities[k] = log10(norm(V' * V - I) + 1e-20)
 end
 savefig(plot(quantities, linewidth=2),"part1.png")
+
+# Part 4
+function arnoldi(A,b,k)
+  n = size(A,1)
+  V = zeros(n,k+1)
+  H = zeros(k+1,k)
+  V[:,1] = b/norm(b)
+  for j=1:k
+    y = A*V[:,j]
+    for i=1:k
+      H[i,j] = V[:,i]'*y
+      y -= H[i,j]*V[:,i]
+    end
+    H[j+1,j] = norm(y)
+    V[:,j+1] = y/H[j+1,j]
+  end
+  return V,H
+end
+
+quantities = zeros(60)
+b = rand(n); b = b / norm(b)
+for k=1:60
+    V, T = arnoldi(A, b, k)
+    quantities[k] = log10(norm(A * V[:,1:k] - V * T) + 1e-20)
+end
+savefig(plot(quantities, linewidth=2),"part4.png")
