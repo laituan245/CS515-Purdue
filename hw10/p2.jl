@@ -1,6 +1,13 @@
 using LinearAlgebra
 using SparseArrays
 
+# Define constants
+lambda_1 = 0.1
+lambda_n = 100
+p = 0.9
+n = 30
+
+# Function for the Lanczos method
 function lanczos(A,b,k)
   n = size(A,1)
   V = zeros(n,k+1)
