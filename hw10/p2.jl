@@ -7,6 +7,17 @@ lambda_n = 100
 p = 0.9
 n = 30
 
+# Function for defining a Strako\v{s} matrix
+function build_strakos_matrix(lambda_1, lambda_n, p, n)
+    d = zeros(n)
+    for i = 1:n
+        d[i] = lambda_1 + ((i-1)/(n-1)) * (lambda_n - lambda_1) * p^(n-i)
+    end
+    return Diagonal(d)
+end
+
+A = build_strakos_matrix(lambda_1, lambda_n, p, n)
+
 # Function for the Lanczos method
 function lanczos(A,b,k)
   n = size(A,1)
