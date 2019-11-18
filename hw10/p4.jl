@@ -42,18 +42,22 @@ function cg(A, b, tol)
     return x
 end
 
-# Neumann series-based solver
-function neumann(A, b, tol)
-    bnrm2 = norm(b)
-    if bnrm2 == 0.0
-        bnrm2 = 1.0
-    end
+# Gradient Descent
+function gradient_descent(A, b, tol)
+    nonzeros_A = length(A.nzval)
+    x = rand(A.n)
+    g = A * x - b
+    Ag = A * g
+    relative_residual = norm(g) / norm(b)
+    while relative_residual > tol
+        alpha = dot(g, g) / (dot(g, Ag))
+        x = x - alpha * g
 
-    x = copy(b) # make a copy of the right hand side
-    r = b - A*x # compute the residual
-    while norm(r) / bnrm2 > tol
-        x .+= r
-        r = b - A*x
+        # Update g and Ag
+        # The order of the following two statements is important
+        g = g - alpha * Ag
+        Ag = A * g
+        relative_residual = norm(g) / norm(b)
     end
     return x
 end
@@ -81,3 +85,7 @@ augmented_b = vec(vcat(b, zeros(size(b))))
 # # Solve using the Conjugate gradient method
 x_cg = cg(augmented_A, augmented_b, 1e-8)[141:280]
 println(norm(A * x_cg - b) / norm(b))
+
+# # Solve using gradient descent
+x_gd = gradient_descent(A, b, 1e-8)
+println(norm(A * x_gd - b) / norm(b))
