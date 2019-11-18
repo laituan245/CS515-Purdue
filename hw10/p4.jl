@@ -15,8 +15,9 @@ function cg(A, b, tol)
         return x
     end
 
-    rho_1 = 0; p = 0
+    rho_1 = 0; p = 0; iter = 0
     while true
+        iter += 1
         z = r
         rho = dot(r,z)
 
@@ -72,3 +73,11 @@ b[134] = 0
 A = T' - I
 b = -b
 x_true = A \ b
+
+# Define the augmented system since A is non-symmetric
+augmented_A = vcat(hcat(I, A), hcat(A', zeros(size(A))))
+augmented_b = vec(vcat(b, zeros(size(b))))
+
+# # Solve using the Conjugate gradient method
+x_cg = cg(augmented_A, augmented_b, 1e-8)[141:280]
+println(norm(A * x_cg - b) / norm(b))
