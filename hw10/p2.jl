@@ -1,3 +1,4 @@
+using Plots
 using LinearAlgebra
 using SparseArrays
 
@@ -39,3 +40,12 @@ function lanczos(A,b,k)
   end
   return V,T,rho
 end
+
+# Part 1
+quantities = zeros(n)
+b = ones(n) / sqrt(n)
+for k=1:n
+    V = lanczos(A, b, k)[1][:,1:k]
+    quantities[k] = log10(norm(V' * V - I) + 1e-20)
+end
+savefig(plot(quantities, linewidth=2),"part1.png")
