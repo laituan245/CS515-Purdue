@@ -9,7 +9,7 @@ function cg(A, b, tol)
         bnrm2 = 1.0
     end
 
-    x = copy(b); x[:] = 0
+    x = copy(b); x[:] .= 0
     r = copy(b)
     if norm(r) / bnrm2 < tol
         return x
