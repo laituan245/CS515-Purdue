@@ -41,6 +41,22 @@ function cg(A, b, tol)
     return x
 end
 
+# Neumann series-based solver
+function neumann(A, b, tol)
+    bnrm2 = norm(b)
+    if bnrm2 == 0.0
+        bnrm2 = 1.0
+    end
+
+    x = copy(b) # make a copy of the right hand side
+    r = b - A*x # compute the residual
+    while norm(r) / bnrm2 > tol
+        x .+= r
+        r = b - A*x
+    end
+    return x
+end
+
 # Build the Candyland linear system
 data = readdlm("candyland-matrix.csv",',')
 TI = Int.(data[:,1])
@@ -55,3 +71,4 @@ b[134] = 0
 # Define the system
 A = T' - I
 b = -b
+x_true = A \ b
