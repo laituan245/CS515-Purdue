@@ -3,7 +3,7 @@ using DelimitedFiles
 using SparseArrays
 
 # Conjugate gradient
-function cg(A, b, max_it, tol)
+function cg(A, b, tol)
     bnrm2 = norm(b)
     if bnrm2 == 0.0
         bnrm2 = 1.0
@@ -16,7 +16,7 @@ function cg(A, b, max_it, tol)
     end
 
     rho_1 = 0; p = 0
-    for iter=1:max_it
+    while true
         z = r
         rho = dot(r,z)
 
