@@ -42,6 +42,22 @@ function cg(A, b, tol)
     return x
 end
 
+# Neumann series-based solver
+function neumann(A, b, tol)
+    bnrm2 = norm(b)
+    if bnrm2 == 0.0
+        bnrm2 = 1.0
+    end
+
+    x = copy(b) # make a copy of the right hand side
+    r = b - A*x # compute the residual
+    while norm(r) / bnrm2 > tol
+        x .+= r
+        r = b - A*x
+    end
+    return x
+end
+
 # Gradient Descent
 function gradient_descent(A, b, tol)
     nonzeros_A = length(A.nzval)
