@@ -1,3 +1,7 @@
+using LinearAlgebra
+using DelimitedFiles
+using SparseArrays
+
 # Conjugate gradient
 function cg(A, b, max_it, tol)
     bnrm2 = norm(b)
@@ -46,3 +50,18 @@ function cg(A, b, max_it, tol)
 
     return x,res
 end
+
+# Build the Candyland linear system
+data = readdlm("candyland-matrix.csv",',')
+TI = Int.(data[:,1])
+TJ = Int.(data[:,2])
+TV = data[:,3]
+T = sparse(TI,TJ, TV, 140,140)
+
+# Prepare the vector b
+b = ones((140, 1))
+b[134] = 0
+
+# Define the system
+A = T' - I
+b = -b
