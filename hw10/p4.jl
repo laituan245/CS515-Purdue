@@ -12,10 +12,10 @@ function cg(A, b, tol)
     x = copy(b); x[:] .= 0
     r = copy(b)
     if norm(r) / bnrm2 < tol
-        return x
+        return x, 0
     end
 
-    rho_1 = 0; p = 0; iter = 0
+    rho_1 = 0; p = 0; iter = 0; mat_vec_count = 0;
     while true
         iter += 1
         z = r
@@ -28,7 +28,7 @@ function cg(A, b, tol)
             p = z
         end
 
-        q = A*p
+        q = A*p; mat_vec_count += 1;
         alpha = rho / (p'*q)
         x = x + alpha * p              # update approximation vector
 
@@ -39,23 +39,24 @@ function cg(A, b, tol)
         rho_1 = rho
     end
 
-    return x
+    return x, mat_vec_count
 end
 
 # Neumann series-based solver
 function neumann(A, b, tol)
+    mat_vec_count = 0
     bnrm2 = norm(b)
     if bnrm2 == 0.0
         bnrm2 = 1.0
     end
 
     x = copy(b) # make a copy of the right hand side
-    r = b - A*x # compute the residual
+    r = b - A*x; mat_vec_count += 1; # compute the residual
     while norm(r) / bnrm2 > tol
         x .+= r
-        r = b - A*x
+        r = b - A*x; mat_vec_count += 1;
     end
-    return x
+    return x, mat_vec_count
 end
 
 # Build the Candyland linear system
@@ -79,9 +80,14 @@ augmented_A = vcat(hcat(I, A), hcat(A', zeros(size(A))))
 augmented_b = vec(vcat(b, zeros(size(b))))
 
 # # Solve using the Conjugate gradient method
-x_cg = cg(augmented_A, augmented_b, 1e-8)[141:280]
+println("Conjugate gradient method")
+x_cg, mat_vec_count_cg = cg(augmented_A, augmented_b, 1e-8)
+x_cg = x_cg[141:280]
 println(norm(A * x_cg - b) / norm(b))
+println(mat_vec_count_cg)
 
 # Solve using the neumann series-based solver
-x_neumann = neumann(A, b, 1e-8)
+println("\nNeumann series-based solver")
+x_neumann, mat_vec_count_neumann = neumann(A, b, 1e-8)
 println(norm(A * x_neumann - b) / norm(b))
+println(mat_vec_count_neumann)
