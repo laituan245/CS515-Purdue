@@ -176,3 +176,51 @@ for k=1:25
     res_simple_cg[k] = norm(b-A*x)
 end
 println(res_simple_cg)
+
+# Modified standard cg
+function modified_standard_cg(A, b, tol)
+    bnrm2 = norm(b)
+    if bnrm2 == 0.0
+        bnrm2 = 1.0
+    end
+
+    x = copy(b); x[:] .= 0
+    r = copy(b)
+    if norm(r) / bnrm2 < tol
+        return x, 0
+    end
+
+    rho_1 = 0; p = 0; iter = 0; mat_vec_count = 0;
+    while true
+        iter += 1
+        z = r
+        rho = dot(r,z)
+
+        if iter > 1
+            beta = rho / rho_1
+            p = z + beta*p
+        else
+            p = z
+        end
+
+        q = A*p; mat_vec_count += 1;
+        alpha = rho / (p'*q)
+        x = x + alpha * p              # update approximation vector
+
+        r = r - alpha*q                # compute residual
+        if norm(r) / bnrm2  <= tol     # check convergence
+            break
+        end
+        rho_1 = rho
+    end
+
+    return x, iter
+end
+
+println("Part 3")
+n = 1800
+on = ones(Int64,n)
+A = spdiagm(-1=>-2*on[1:end-1],0=>4*on,1=>-2*on[1:end-1])
+b = ones(n)
+nb_iter = modified_standard_cg(A, b, 1.0e-8)[2]
+println(nb_iter)
