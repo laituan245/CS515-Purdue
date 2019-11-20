@@ -138,3 +138,41 @@ println(norm(b-A * x_minres)/norm(b))
 x_cg, x_res_cg = standard_cg(A, b, 1.0e-8,1000)
 println(norm(b-A * x_cg)/norm(b))
 println(x_res_cg[1:25])
+
+# Simple CG
+function lanczos(A,b,k)
+  n = size(A,1)
+  V = zeros(n,k+1)
+  T = Tridiagonal(zeros(k-1), zeros(k), zeros(k-1))
+  rho = 0.0
+  V[:,1] = b/norm(b)
+  for j=1:k
+    y = A*V[:,j]
+    for i=max(j-1,1):j
+      T[i,j] = V[:,i]'*y
+      y -= T[i,j]*V[:,i]
+    end
+    rho = norm(y)
+    V[:,j+1] = y/rho
+    if j < k
+      T[j+1,j] = rho
+    end
+  end
+  return V,T,rho
+end
+
+function simple_cg(A,b,k)
+  V,T,rho = lanczos(A,b,k)
+  rhs = zeros(k)
+  rhs[1] = norm(b)
+  y = T \ rhs # solve the tridiagonal system
+  x = V[:, 1:k]*y
+  return x
+end
+
+res_simple_cg = zeros(25)
+for k=1:25
+    x = simple_cg(A,b,k)
+    res_simple_cg[k] = norm(b-A*x)
+end
+println(res_simple_cg)
