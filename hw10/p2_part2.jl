@@ -53,11 +53,13 @@ savefig(plot(quantities, linewidth=2),"part2a.png")
 
 
 # Part 2b
-quantities = zeros(n)
+xs = zeros(n-2)
+quantities = zeros(n-2)
 b = ones(n) / sqrt(n)
 for k=3:30
     V = lanczos(A, b, k)[1]
     vk_2 = V[:,k-2]; vk = V[:,k]
-    quantities[k] = log10(abs(vk_2' * vk) + 1e-20)
+    xs[k-2] = k
+    quantities[k-2] = log10(abs(vk_2' * vk) + 1e-20)
 end
-savefig(plot(quantities, linewidth=2),"part2b.png")
+savefig(plot(xs, quantities, linewidth=2),"part2b.png")
