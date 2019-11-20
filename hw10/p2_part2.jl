@@ -41,4 +41,23 @@ function lanczos(A,b,k)
   return V,T,rho
 end
 
-# Part 2
+# Part 2a
+quantities = zeros(n)
+b = ones(n) / sqrt(n)
+for k=1:30
+    V = lanczos(A, b, k)[1]
+    v1 = V[:,1]; vk = V[:,k]
+    quantities[k] = log10(abs(v1' * vk) + 1e-20)
+end
+savefig(plot(quantities, linewidth=2),"part2a.png")
+
+
+# Part 2b
+quantities = zeros(n)
+b = ones(n) / sqrt(n)
+for k=3:30
+    V = lanczos(A, b, k)[1]
+    vk_2 = V[:,k-2]; vk = V[:,k]
+    quantities[k] = log10(abs(vk_2' * vk) + 1e-20)
+end
+savefig(plot(quantities, linewidth=2),"part2b.png")
