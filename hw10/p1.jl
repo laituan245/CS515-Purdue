@@ -7,6 +7,15 @@ on = ones(Int64,n)
 A = spdiagm(-1=>-2*on[1:end-1],0=>4*on,1=>-2*on[1:end-1])
 b = ones(n)
 
+function planerot(x)
+  a,b = -x[2],x[1]
+  d = sqrt(b^2+a^2)
+  a,b = a/d,b/d
+  G = [b -a;a b]
+  y = G*x
+  return G,y
+end
+
 function gmres_efficient(A,b,tol,maxit)
   n = size(b)
   beta = norm(b)
@@ -73,3 +82,7 @@ function gmres_efficient(A,b,tol,maxit)
   hist = hist[1:lasti]
   return x,hist,flag
 end
+
+# Using MINRES
+x_minres,hist_minres,flag_minres = gmres_efficient(A,b,1.0e-8,1000)
+println(norm(b-A * x_minres)/norm(b))
