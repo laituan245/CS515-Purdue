@@ -23,3 +23,14 @@ println(hist_pgm)
 rel_residuals_pgm = log10.(hist_pgm.data[:resnorm] / norm(b))
 savefig(plot(rel_residuals_pgm, xlabel="iterations", ylabel="Log Relative residuals",
              label="preconditioner + GMRES", linewidth=2), "preconditioner_gmres.png")
+
+
+# Use preconditioner + MINRES
+using Krylov # ] clone https://github.com/JuliaSmoothOptimizers/Krylov.jl.git
+using LinearOperators
+P1 = opInverse(LowerTriangular(ichol(C)))
+Mprecond = P1'*P1;
+x_pmin, hist_pmin = Krylov.minres(C, b, M=Mprecond, itmax=10000, rtol=1e-10)
+rel_residuals_pmin = log10.(hist_pmin.residuals / norm(b))
+savefig(plot(rel_residuals_pmin, xlabel="iterations", ylabel="Log Relative residuals",
+             label="preconditioner + MINRES", linewidth=2), "preconditioner_minres.png")
