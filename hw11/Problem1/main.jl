@@ -20,5 +20,7 @@ rel_residuals_min = log.(hist_min.data[:resnorm] / norm(b))
 rel_residuals_gm = log.(hist_gm.data[:resnorm] / norm(b))
 
 # Make plots
-savefig(plot(rel_residuals_min, xlabel="iterations", ylabel="Log Relative residuals", label="MINRES", linewidth=2), "rel_residuals_min.png")
-savefig(plot(rel_residuals_gm[1:101], xlabel="iterations", ylabel="Log Relative residuals", label="GMRES", linewidth=2), "rel_residuals_gm.png")
+savefig(plot(rel_residuals_min, xlabel="iterations", ylabel="Log Relative residuals",
+             label="MINRES", linewidth=2), "rel_residuals_min.png")
+savefig(plot(rel_residuals_gm[1:101], xlabel="iterations", ylabel="Log Relative residuals",
+             label="GMRES", linewidth=2), "rel_residuals_gm.png")
