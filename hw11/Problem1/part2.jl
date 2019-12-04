@@ -14,3 +14,12 @@ b = vec(readdlm("poisson2D-rhs.csv"))
 # Define matrix C
 sigma = 1.7 * 1e-2
 C = A - sigma * I
+
+# Use preconditioner + GMRES
+Lchol = ichol(C)
+M1 = LowerPrecond(ichol(C))
+x_pgm, hist_pgm = gmres(C, b, restart = 30, tol = 1.0e-6 * norm(b), maxiter = 10000, Pl=M1, log=true)
+println(hist_pgm)
+rel_residuals_pgm = log10.(hist_pgm.data[:resnorm] / norm(b))
+savefig(plot(rel_residuals_pgm, xlabel="iterations", ylabel="Log Relative residuals",
+             label="preconditioner + GMRES", linewidth=2), "preconditioner_gmres.png")
