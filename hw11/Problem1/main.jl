@@ -13,3 +13,7 @@ b = vec(readdlm("poisson2D-rhs.csv"))
 sigma = 1.7 * 1e-2
 x_min, hist_min = minres(A - sigma * I, b, tol = 1e-6, maxiter = 10000, log=true)
 x_gm, hist_gm = gmres(A - sigma * I, b, restart = 30, maxiter = 10000, tol = 1e-6, log=true)
+
+# Calculate the relative residuals
+rel_residuals_min = hist_min.data[:resnorm] / norm(b)
+rel_residuals_gm = hist_gm.data[:resnorm] / norm(b)
