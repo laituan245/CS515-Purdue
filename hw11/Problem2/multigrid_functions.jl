@@ -132,8 +132,8 @@ function poisson_residual(X,B)
 end
 
 function restrict(X)
-  nyhalf = div(size(X,2) + 1) , 2)
-  nxhalf = div(size(X,1) + 1) , 2)
+  nyhalf = div((size(X,2) + 1) , 2)
+  nxhalf = div((size(X,1) + 1) , 2)
   X2 = zeros(nxhalf,nyhalf)
   for J=3:2:size(X,2)-2
     j = div(J , 2 )
