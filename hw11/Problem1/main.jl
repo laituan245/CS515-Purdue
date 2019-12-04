@@ -11,5 +11,5 @@ b = vec(readdlm("poisson2D-rhs.csv"))
 
 # Do MINRES and GMRES
 sigma = 1.7 * 1e-2
-x, hist_min = minres(A - sigma * I, b, tol = 1e-6, maxiter = 10000, log=true)
-x, hist_gm = gmres(A - sigma * I, b, restart = 30, maxiter = 10000, tol = 1e-6, log=true)
+x_min, hist_min = minres(A - sigma * I, b, tol = 1e-6, maxiter = 10000, log=true)
+x_gm, hist_gm = gmres(A - sigma * I, b, restart = 30, maxiter = 10000, tol = 1e-6, log=true)
