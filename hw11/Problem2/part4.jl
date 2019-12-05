@@ -31,7 +31,7 @@ function analyze_error_trend(n, iters=1500)
     for i=2:iters
         ratios[i] = errors[i] / errors[i-1]
     end
-    savefig(plot(2:iters, ratios[2:iters], linewidth=2, label="Error Ratio"), "gauss_seidel_error_trend.png")
+    savefig(plot(2:iters, ratios[2:iters], linewidth=2, label="Error Ratio (Gauss Seidel)"), "gauss_seidel_error_trend.png")
     println(string("last ratio = ", ratios[iters]))
     println(string("last error = ", errors[iters]))
 
