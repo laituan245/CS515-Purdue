@@ -26,7 +26,7 @@ function lanczos(A,b,k)
 end
 
 # Build bipartite matrix + Lanczos + QR method
-function solve_part1(M, iters = 100)
+function solve_part1(M)
     m, n = size(M)
     B = [spzeros(m, m) M; M' spzeros(n,n)]
 
