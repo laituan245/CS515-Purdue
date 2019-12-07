@@ -25,18 +25,22 @@ function lanczos(A,b,k)
   return V,T,rho
 end
 
-# Build bipartite matrix + Lanczos + QR method
-function solve_part1(M)
-    m, n = size(M)
-    B = [spzeros(m, m) M; M' spzeros(n,n)]
-
-end
-
 # Read the eigenfaces matrix and compute svd using Julia built-in function
 A = readdlm(download("http://www.cs.purdue.edu/homes/dgleich/cs515-2019/homeworks/Yale_64.csv"),',')
 M = A'
 
+# Build bipartite matrix
+m, n = size(M)
+B = [spzeros(m, m) M; M' spzeros(n,n)]
+for k=5:16
+    global(B); global(m); global(n)
+    println(string("\nk = ", k))
+    V, T, rho = lanczos(B,ones(m+n),k)
+    display(sort(eigvals(Matrix(T)), rev=true)[1:5])
+end
+
 
 # Compare to the built-in SVD function of Julia
+println("\nUse the built-in SVD function of Julia")
 U,Sig,V = svd(M)
 println(Sig[1:5])
