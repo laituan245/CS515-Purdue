@@ -6,5 +6,5 @@ using LinearAlgebra
 Z = rand(7, 3)
 A = I + Z * Z'
 println(string("Condition number of A is ", cond(A, 2)))
-U,Sig,V = svd(Z, full=true)
+U,Sig,V = svd(Z)
 println(string("My predicted condition number of A is ", 1.0 + Sig[1]^2))
